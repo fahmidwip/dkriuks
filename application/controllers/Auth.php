@@ -2,13 +2,13 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Auth extends CI_Controller {
-
+// Untuk Login
 	public function login()
 	{
 		ok();
 		$this->load->view('login');
 	}
-    // TESSSSSS
+    // Proses Login
     public function process() 
 {
     $post = $this->input->post(null, TRUE);
@@ -34,7 +34,7 @@ class Auth extends CI_Controller {
     }
 }
 
-
+// Proses logout
 public function logout()
 {
     

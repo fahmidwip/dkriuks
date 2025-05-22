@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+// Untuk memanggil model
 class Keranjang extends CI_Controller {
 
     public function __construct() {

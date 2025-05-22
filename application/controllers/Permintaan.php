@@ -5,7 +5,7 @@ require_once FCPATH . 'vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+// Untuk memanggil model
 class Permintaan extends CI_Controller {
 
     public function __construct() {
@@ -26,17 +26,17 @@ class Permintaan extends CI_Controller {
         $data['row_tl'] = $this->pesan_m->get_tl1();
 		$this->template->load('template','permintaan/permintaan_data', $data);
 	}
-
+// Untuk tambah permintaan bahan
 	public function tambah(){
 		$data['row'] = $this->harga_m->get2();
 		$this->template->load('template', 'permintaan/permintaan_tambah2',$data);
 }
-
+// Untuk tambah permintaan bahan
 public function tambah1(){
 		$data['row'] = $this->harga_m->get2();
 		$this->template->load('template', 'permintaan/permintaan_tambah2',$data);
 }
-
+// Untuk input data
 public function input() {
     $user_id = $this->session->userdata('userid');
 
@@ -127,7 +127,7 @@ foreach ($barang_ids as $index => $id_barang) {
     $this->session->set_flashdata('success', 'Data berhasil disimpan!');
     redirect('permintaan');
 }
-
+// Untuk menuju halama edit
 public function lh($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
     $pesan = $this->pesan_m->detail($id);
@@ -139,6 +139,7 @@ public function lh($id) {
 
     $this->template->load('template', 'permintaan/permintaan_detail', $data);
 }
+// Untuk melihat yg sudah di tindak lanjut
 public function lh_tl($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); 
     $pesan = $this->pesan_m->detail($id);
@@ -150,6 +151,7 @@ public function lh_tl($id) {
 
     $this->template->load('template', 'permintaan/permintaan_detail_tl', $data);
 }
+// Untuk melihat yg sudah selesai
 public function lh_sl($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
     $pesan = $this->pesan_m->detail($id);
@@ -161,6 +163,7 @@ public function lh_sl($id) {
 
     $this->template->load('template', 'permintaan/permintaan_detail_sl', $data);
 }
+// Untuk melihat yg batal
 public function lh_sl_l($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
     $pesan = $this->pesan_m->detail($id);
@@ -172,6 +175,7 @@ public function lh_sl_l($id) {
 
     $this->template->load('template', 'permintaan/permintaan_detail_sl_l', $data);
 }
+// Untuk dashboard stokis
 public function pesanan() {
     check_logistik();
     $user_id = $this->fungsi->user_login()->stokis;
@@ -180,7 +184,7 @@ public function pesanan() {
     $data['rows_tl'] = $this->pesan_m->stokis_tl2($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis', $data);
 }
-
+// Untuk menuju halaman laporan untuk stokis
 public function pesanan_lap() {
     check_logistik();
     $user_id = $this->fungsi->user_login()->stokis;
@@ -189,6 +193,7 @@ public function pesanan_lap() {
     $data['rows_tl'] = $this->pesan_m->stokis_tl2($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap', $data);
 }
+// Untuk melihat yg sudah di tindak lanjut
 public function pesanan_lap_po_direk() {
     check_direksi();
     $user_id = $this->fungsi->user_login()->stokis;
@@ -197,6 +202,7 @@ public function pesanan_lap_po_direk() {
     $data['rows_tl'] = $this->pesan_m->stokis_tl2_direk($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap_direk', $data);
 }
+// Untuk menuju halaman laporan penjualan berdasarkan item
 public function pesanan_lap2() {
     check_logistik();
     $user_id = $this->fungsi->user_login()->logistik;
@@ -206,6 +212,7 @@ public function pesanan_lap2() {
     $data['rows_tl_sum'] = $this->pesan_m->logistik_tl_sum($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap_item', $data);
 }
+// Untuk menuju halaman laporan penjualan berdasarkan item untuk logistik
 public function pesanan_lap3() {
     check_logistik();
     $user_id = $this->fungsi->user_login()->logistik;
@@ -215,7 +222,7 @@ public function pesanan_lap3() {
     $data['rows_tl_sum'] = $this->pesan_m->logistik_tl_sum1($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap_item', $data);
 }
-
+// Untuk menuju halaman laporan penjualan berdasarkan item untuk direksi
 public function pesanan_lap_direk() {
     check_direksi();
     $user_id = $this->fungsi->user_login()->logistik;
@@ -225,12 +232,14 @@ public function pesanan_lap_direk() {
     $data['rows_tl_sum'] = $this->pesan_m->logistik_tl_sum_direk($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap_item_direk', $data);
 }
+// Untuk menghapus
 public function del($id){
 	$this->pesan_m->delete($id);
     $this->keranjang_model->delete($id);
 	$this->session->set_flashdata('danger', 'Data berhasil dihapus.');
 	redirect(base_url('permintaan'));
 }
+// Untuk menuju halaman lihat data
 public function ed($id)
 {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
@@ -245,7 +254,7 @@ public function ed($id)
 
     $this->template->load('template', 'pesan/pesan_edit', $data);
 }
-
+// Untuk menuju halaman edit
 public function editin()
 {
     $id_pesan = $this->input->post('id_pesan');
@@ -259,6 +268,7 @@ public function editin()
 	$this->session->set_flashdata('success', 'Data berhasil dikirim.');
 	redirect(base_url('permintaan'));
 }
+// Untuk menyetujui
 public function editin_tl() 
 {
     $id_pesan = $this->input->post('id_pesan');
@@ -311,7 +321,7 @@ public function editin_tl()
 
     redirect(base_url('permintaan/pesanan'));
 }
-
+// Untuk menyetujui
 public function editin_tl1() 
 {
     $id_pesan = $this->input->post('id_pesan');
@@ -352,7 +362,7 @@ public function editin_tl1()
     }
 }
 
-
+// Untuk menuju halaman cetag
 public function pr($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
     $pesan = $this->pesan_m->detail($id);
@@ -363,7 +373,7 @@ public function pr($id) {
     );
 
     $this->load->view('pesan/cetak', $data);
-}
+}// Untuk menuju halaman cetak struk
 public function pr1($id) {
     $keranjang = $this->keranjang_model->getByPesanId($id); // <-- ini harus return result()
     $pesan = $this->pesan_m->detail($id);
@@ -375,7 +385,7 @@ public function pr1($id) {
 
     $this->load->view('pesan/cetak_struk', $data);
 }
-
+// Untuk menolak permintaan
 public function editin_tl_batal()
 {
     $id_pesan = $this->input->post('id_pesan');
@@ -389,6 +399,7 @@ public function editin_tl_batal()
 	$this->session->set_flashdata('success', 'Data berhasil dikirim.');
 	redirect(base_url('pesan/pesanan'));
 }
+// Untuk mengexport ke excel
 public function export_excel() 
 {
     $user_id = $this->fungsi->user_login()->stokis;

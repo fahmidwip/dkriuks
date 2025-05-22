@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+// Untuk memanggil model
 class Harga extends CI_Controller {
     
     public function __construct() {
@@ -12,53 +12,55 @@ class Harga extends CI_Controller {
 		no();
         check_finance();
     }
-
+// Untuk memanggil dashboard harga
 	public function index()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->get();
 		$this->template->load('template','harga/harga_data', $data);
 	}
-
+// Untuk memanggil harga di finance
     public function index_b()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->getfull();
 		$this->template->load('template','harga/harga_data_baru', $data);
 	}
+    // Untuk memanggil harga jawa
     public function jawa()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->jawa();
 		$this->template->load('template','harga/harga_data_baru_jawa', $data);
 	}
-
+// Untuk memanggil harga sumatera
     public function sumatera()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->sumatera();
 		$this->template->load('template','harga/harga_data_baru_sumatera', $data);
 	}
-
+// Untuk memanggil harga wita
     public function wita()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->wita();
 		$this->template->load('template','harga/harga_data_baru_wita', $data);
 	}
-
+// Untuk memanggil harga
     public function index_b1()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->harga_m->get3();
 		$this->template->load('template','harga/harga_data_baru1', $data);
 	}
-
+// Untuk memanggil tambah harga
 	public function tambah(){
 		$data['provinsi'] = $this->user_m->get_provinsi();
 		$this->template->load('template', 'harga/harga_tambah',$data);
 	
 }
+// Untuk menyimpan data baru
 public function input() {
     $provinsi_id = $this->fungsi->user_login()->provinsi;
 	
@@ -78,6 +80,7 @@ public function input() {
     $this->session->set_flashdata('success', 'Data berhasil diinput.');
     redirect(base_url('harga/index_b'));
 }
+// Untuk menyimpan data baru
 public function input_b() {
     $provinsi_id = $this->fungsi->user_login()->provinsi;
 	
@@ -100,6 +103,7 @@ public function input_b() {
     $this->session->set_flashdata('success', 'Data berhasil diinput.');
     redirect(base_url('harga/index_b'));
 }
+// Untuk menuju halaman edit
 public function ed($id)
 {
          $hrg=$this->harga_m->detail($id);
@@ -112,7 +116,7 @@ public function ed($id)
 		);
 	$this->template->load('template', 'harga/harga_edit',$data);
 }
-
+// Untuk menyimpan data yang di edit
 public function editin()
 {
     $id_harga = $this->input->post('id_harga');
@@ -133,7 +137,7 @@ public function editin()
 	redirect(base_url('harga/index_b'));
 }
 
-
+// Untuk hapus data
 public function del($id)
 {
     

@@ -1,15 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+// Untuk memanggil model
 class Dashboard extends CI_Controller {
 	public function __construct() {
         parent::__construct();
 		$this->load->model('harga_m');
 		$this->load->model('pesan_m');
-		
+		// Validasi sudah login apa belum
 		no();
     }
-	
+	// untuk fungsi di dashboard seperti jumlah pemesanan
 		public function index() {
 		  $this->load->model('Pesan_m');
 		  $this->load->model('keranjang_model');

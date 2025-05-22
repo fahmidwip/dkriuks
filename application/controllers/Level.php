@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+// Untuk memanggil model
 class Level extends CI_Controller {
     
     public function __construct() {
@@ -13,18 +13,20 @@ class Level extends CI_Controller {
 		no();
 		check_admin();
     }
-
+// Untuk dashboard level
 	public function index()
 	{
 		$user_id = $this->fungsi->user_login()->provinsi;
 		$data['row'] = $this->provinsi_m->get_level();
 		$this->template->load('template','level/level_data', $data);
 	}
+	// Untuk tambah level
 	public function tambah(){
 		$data['level'] = $this->user_m->get_level();
 		$this->template->load('template', 'level/level_tambah',$data);
 	
 }
+// Untuk memasukan datanya
 public function input() {
     
     $level = $this->input->post('level');
@@ -38,7 +40,7 @@ public function input() {
     $this->session->set_flashdata('success', 'Data berhasil diinput.');
     redirect(base_url('level'));
 }
-
+// Untuk mennuju halaman edit
 public function ed($id)
 	{
 		$level = $this->provinsi_m->detail_level($id);
@@ -50,7 +52,7 @@ public function ed($id)
 	
 		$this->template->load('template', 'level/level_edit', $data);
 	}
-
+// Untuk menyimpan data yang diedit
     public function editin()
 	{
 		$id_level = $this->input->post('id_level');
@@ -64,7 +66,7 @@ public function ed($id)
 		$this->session->set_flashdata('success', 'Data berhasil diubah.');
 		redirect(base_url('level'));
     }
-
+// Untuk delete data
     public function del()
 	{
 		$id = $this->input->post('id_level');

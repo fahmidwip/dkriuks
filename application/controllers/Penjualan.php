@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+// Untuk memanggil model
 class Penjualan extends CI_Controller {
     
     public function __construct() {
@@ -11,7 +11,7 @@ class Penjualan extends CI_Controller {
         $this->load->library('form_validation');
 		no();
     }
-
+// Untuk dashboard penjualan
 	public function index()
 	{
 		check_stokis();
@@ -22,7 +22,7 @@ class Penjualan extends CI_Controller {
 	$data['rows_tl_sum'] = $this->pesan_m->stokis_tl_sum($user_id);
     $this->template->load('template','penjualan/penjualan_data', $data);
 	}
-
+// Untuk dashboard penjualan khusus direksi
     public function index1()
 	{
         check_direksi();
@@ -33,7 +33,7 @@ class Penjualan extends CI_Controller {
 	$data['rows_tl_sum'] = $this->pesan_m->stokis_tl_sum1($user_id);
     $this->template->load('template','penjualan/penjualan_data_direksi_po', $data);
 	}
-
+// Untuk dashboard penjualan khusus stokis
 	public function index2()
 {
     check_stokis();
@@ -49,7 +49,7 @@ class Penjualan extends CI_Controller {
 
     $this->template->load('template', 'penjualan/penjualan_data2', $data);
 }
-
+// Untuk dashboard pemesanan bahan khusus direksi
 	public function index_item()
 {
     check_direksi();
