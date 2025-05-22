@@ -1,0 +1,29 @@
+form input textnya :
+  <tr><td width='200'>Nama Buku</td>
+            <td><input type="text" class="form-control" name="id_buku" style="width: 200px" id="id_buku" placeholder="Nama Buku" value="<?php echo $id_buku; ?>" /></td>
+        </tr>
+///////////////////////////////////////
+
+javascriptnya :
+<script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+<script type="text/javascript">
+    $(function() {
+        //autocomplete
+        $("#id_buku").autocomplete({
+            source: "<?php echo base_url() ?>/index.php/peminjaman_buku/detail_buku",
+            minLength: 1
+        });       
+    });
+</script>
+////////////////////////////////////////////////////////////////
+
+function dicontroller/file untuk select data :
+function detail_buku(){
+        $s = "SELECT nama_buku FROM tb_buku";
+        $queri= $this->db->query($s);
+            foreach ($queri->result() as $nama) {
+                $return_arr[] = $nama->nama_buku;
+            }
+    echo json_encode($return_arr);
+    }
+/////////////////////////////////////////////////////////////////////////////

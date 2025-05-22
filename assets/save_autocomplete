@@ -1,0 +1,49 @@
+form input textnya :
+  <tr><td width='200'>Nama Buku</td>
+            <td><input type="text" class="form-control" name="id_buku" style="width: 200px" id="id_buku" placeholder="Nama Buku" value="<?php echo $id_buku; ?>" /></td>
+        </tr>
+///////////////////////////////////////
+
+javascriptnya :
+<script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+<script type="text/javascript">
+    $(function() {
+        //autocomplete
+        $("#id_buku").autocomplete({
+            source: "<?php echo base_url() ?>/index.php/peminjaman_buku/detail_buku",
+            minLength: 1
+        });       
+    });
+</script>
+////////////////////////////////////////////////////////////////
+
+function dicontroller/file untuk select data :
+function detail_buku(){
+        $s = "SELECT nama_buku FROM tb_buku";
+        $queri= $this->db->query($s);
+            foreach ($queri->result() as $nama) {
+                $return_arr[] = $nama->nama_buku;
+            }
+    echo json_encode($return_arr);
+    }
+/////////////////////////////////////////////////////////////////////////////
+
+FUNCTION SAVE DATA KE TABEL DATABASE :
+ public function create_action() 
+    {
+        $id_buku = $this->input->post('id_buku',TRUE);
+        $id_member = $this->input->post('id_member',TRUE);
+        $tgl_pinjam = $this->input->post('tgl_pinjam',TRUE);
+        $tgl_kembali = $this->input->post('tgl_kembali',TRUE);
+        $keterangan = $this->input->post('keterangan',TRUE);
+        $jumlah_denda = $this->input->post('jumlah_denda',TRUE);
+
+        $s = "SELECT id_buku FROM tb_buku WHERE nama_buku='$id_buku'";
+        $queri= $this->db->query($s);
+            foreach ($queri->result() as $nama) {
+                $sqll = "INSERT INTO tb_peminjaman_buku SET id_buku='$nama->id_buku', id_member='$id_member', tgl_pinjam='$tgl_pinjam',tgl_kembali='$tgl_kembali',keterangan='$tgl_kembali',jumlah_denda='$jumlah_denda' ";
+              $this->db->query($sqll);
+            }
+            $this->session->set_flashdata('message','<div class="alert alert-success" role="alert"> Data Berhasil ditambahkan<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            redirect(site_url('peminjaman_buku'));
+    }

@@ -1,0 +1,74 @@
+tombol untuk menampilkan form edit :
+ <a data-toggle="modal" data-target="#modal-edit<?php echo $relasi_akun->id_relasi ?>" onclick="edit_periode(<?php echo $relasi_akun->id_relasi ?>)" class="btn btn-warning btn-sm" data-popup="tooltip" data-placement="top" title="Ubah Data"><i class="fa fa-pencil-square-o"/></i></a>
+ //
+ 
+
+view modal editnya :
+<?php $no=0; $relasi_akun_data1 = $this->db->query("SELECT * FROM tb_relasi_akun");
+foreach ($relasi_akun_data1->result() as $relasi_akun): $no++; ?>
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" id="modal-edit<?php echo $relasi_akun->id_relasi?>" class="modal fade">
+    <div class="modal-dialog">
+        <section class="content">
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">EDIT RELASI AKUN</h3>
+                </div>
+                <form id="resetform1<?php echo $relasi_akun->id_relasi ?>" class="form-horizontal" class="form-horizontal" action="<?php echo site_url('relasi_akun/update_action'); ?>" method="post" enctype="multipart/form-data" role="form">
+                    <table class='table table-bordered'>
+                    
+                    <tr><td> Jenis Transaksi <?php echo form_error('kepemilikan') ?></td><td>
+            <select id="kepemilikan1<?php echo $relasi_akun->id_relasi ?>" style="width: 200px" name="kepemilikan" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_jenis_transaksi");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_jenis_transaksi ?>" <?php if($relasi_akun->kepemilikan== "$t->id_jenis_transaksi"){ echo 'selected'; } ?>><?php echo $t->nama_transaksi ?></option>
+                  <?php } ?>
+            </select></td></tr>
+                        <tr><td>Akun Debit<?php echo form_error('id_akun') ?></td><td>
+            <select id="id_akun1<?php echo $relasi_akun->id_relasi ?>" style="width: 350px" name="id_akun" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_akun");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_akun ?>" <?php if($relasi_akun->id_akun== "$t->id_akun"){ echo 'selected'; } ?>><?php echo $t->nama_akun ?></option>
+                  <?php } ?>
+            </select>
+           </td></tr>
+            <tr><td>Akun Kredit<?php echo form_error('id_akun') ?></td><td>
+            <select id="id_pasangan_akun1<?php echo $relasi_akun->id_relasi ?>" style="width: 350px" name="id_pasangan_akun" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_akun");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_akun ?>" <?php if($relasi_akun->id_pasangan_akun== "$t->id_akun"){ echo 'selected'; } ?>><?php echo $t->nama_akun ?></option>
+                  <?php } ?>
+            </select>
+            
+                       <input type="hidden" id="id_relasi" name="id_relasi" value="<?php echo $relasi_akun->id_relasi; ?>" /> 
+       <tr><td></td><td>
+                    <button type="submit" class="btn btn-success btn-sm">Ubah</button> 
+                    <button type="button" data-dismiss="modal" onclick="kosong1(<?php echo $relasi_akun->id_relasi ?>)"  class="btn btn-default btn-sm">Kembali</button></td></tr>
+                    </table>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<?php endforeach; ?>
+//
+
+
+javascriptnya :
+<script type="text/javascript">
+ function edit_periode(id_relasi){
+        $("#id_akun1"+id_relasi).select2();
+        $("#id_pasangan_akun1"+id_relasi).select2();
+        $("#kepemilikan1"+id_relasi).select2();
+    }
+    </script>
+
+//

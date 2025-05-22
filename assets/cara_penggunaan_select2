@@ -1,0 +1,85 @@
+viewnya :
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" id="tambah-data" class="modal fade">
+    <div class="modal-dialog">
+        <section class="content">
+            <div class="box box-warning box-solid">
+                <div class="box-header with-border">
+                    <h3 class="box-title">TAMBAH PENENTUAN AKUN</h3>
+                </div>
+                <form id="resetform" class="form-horizontal" class="form-horizontal" action="<?php echo site_url('relasi_akun/create_action'); ?>" method="post" enctype="multipart/form-data" role="form">
+                    <table class='table table-bordered'>
+
+
+
+
+                    <tr><td> Jenis Transaksi</td><td>
+            <select id="kepemilikan" style="width: 200px" name="kepemilikan1" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_jenis_transaksi");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_jenis_transaksi ?>"><?php echo $t->nama_transaksi ?></option>
+                  <?php } ?>
+            </select></td></tr>
+
+                       <tr><td>Akun Debit</td><td>
+            <select id="id_akun" style="width: 350px" name="id_akun1" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_akun");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_akun ?>" ><?php echo $t->nama_akun ?></option>
+                  <?php } ?>
+            </select>
+           </td></tr>
+            <tr><td>Akun Kredit</td><td>
+            <select id="id_pasangan_akun" style="width: 350px" name="id_pasangan_akun1" class="form-control">
+            <option value="">--PILIH--</option>
+            <?php
+                $list = $this->db->query("SELECT * FROM tb_akun");
+                foreach($list->result() as $t){
+                ?>
+                  <option value="<?php echo $t->id_akun ?>"><?php echo $t->nama_akun ?></option>
+                  <?php } ?>
+            </select>
+
+
+
+            
+           <tr><td></td><td><input type="hidden" name="id_relasi" id="id_relasi" /> 
+                    <button type="submit" class="btn btn-success btn-sm">Simpan</button> 
+                    <button type="button" onclick ="kosong()" id="searchclear1" data-dismiss="modal" class="btn btn-default btn-sm">Kembali</button></td></tr>
+                    </table>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+//
+
+
+javascriptnya :
+<script src="<?php echo base_url('assets/js/jquery-1.11.2.min.js') ?>"></script>
+<script type="text/javascript">
+<script type="text/javascript">
+    $(function () {
+        $(document).ready(function () {
+            $("#id_akun").select2()
+        });
+    });
+
+    $(function () {
+        $(document).ready(function () {
+            $("#id_pasangan_akun").select2()
+        });
+    });
+
+    $(function () {
+        $(document).ready(function () {
+            $("#kepemilikan").select2()
+        });
+    });
+
+</script>
