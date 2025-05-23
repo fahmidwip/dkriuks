@@ -350,8 +350,13 @@
   </ul>
 </li>
 
-          <li <?=$this->uri->segment(1) == 'permintaan' ? 'class="active"' : '' ?>>
-          <a href="<?=site_url('permintaan')?>"><i class="fa  fa-cart-plus"></i> <span>Permintaan Stok</span></a></li>
+          <li <?= $this->uri->segment(1) == 'permintaan' && $this->uri->segment(2) == '' ? 'class="active"' : '' ?>>
+    <a href="<?= site_url('permintaan') ?>"><i class="fa fa-cart-plus"></i> <span>Permintaan Stok</span></a>
+</li>
+<li <?= $this->uri->segment(1) == 'permintaan' && $this->uri->segment(2) == 'pesanan_lap_stokis' ? 'class="active"' : '' ?>>
+    <a href="<?= site_url('permintaan/pesanan_lap_stokis') ?>"><i class="fa  fa-check"></i> <span>Permintaan Stok Selesai</span></a>
+</li>
+
           <li <?=$this->uri->segment(1) == 'stok' ? 'class="active"' : '' ?>>
           <a href="<?=site_url('stok/stokis')?>"><i class="fa fa-pencil-square-o"></i> <span>Adjustment Stok</span></a></li>
           <?php } ?> 

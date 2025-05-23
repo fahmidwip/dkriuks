@@ -212,6 +212,16 @@ public function pesanan_lap2() {
     $data['rows_tl_sum'] = $this->pesan_m->logistik_tl_sum($user_id);
     $this->template->load('template','permintaan/permintaan_data_stokis_lap_item', $data);
 }
+
+public function pesanan_lap_stokis() {
+    check_stokis();
+    $user_id = $this->fungsi->user_login()->logistik;
+    $data['row'] = $this->harga_m->get2();
+    $data['rows'] = $this->pesan_m->stokis2($user_id);
+    $data['rows_tl'] = $this->pesan_m->stokis_tl2($user_id);
+    $data['rows_tl_sum'] = $this->pesan_m->logistik_tl_sum_stk($user_id);
+    $this->template->load('template','permintaan/permintaan_data_stokis_lap_item1', $data);
+}
 // Untuk menuju halaman laporan penjualan berdasarkan item untuk logistik
 public function pesanan_lap3() {
     check_logistik();

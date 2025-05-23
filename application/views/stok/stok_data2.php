@@ -74,7 +74,11 @@ function tgl_indo($tanggal) {
   </div>
 
   <div class="box-body">
-    <h4 style="color: red;"><strong>Harap update stok sesuai dengan permintaan PO yang sudah diajukan</strong></h4>
+    <h4 style="color: red;">
+  <strong>Harap update stok sesuai dengan permintaan PO yang sudah diajukan </strong>
+  <a href="<?= site_url('permintaan/pesanan_lap_stokis') ?>" style="color: red; text-decoration: underline;">Klik di sini</a>
+</h4>
+
 
 
     <div class="table-responsive">

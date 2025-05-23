@@ -184,7 +184,7 @@ if ($buat) {
             <div class="inner">
               <h3>
               
-              <p>Pesanan Baru</p>
+              <p>Pesanan Mitra Baru</p>
             </div>
             <div class="icon">
               <i class="fa fa-shopping-cart"></i>
@@ -200,7 +200,7 @@ if ($buat) {
             <div class="inner">
               <h3>
               
-              <p>Pesanan Selesai</p>
+              <p>Pesanan Mitra Selesai</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -216,7 +216,7 @@ if ($buat) {
             <div class="inner">
               <h3>
               
-              <p>Pesanan Batal</p>
+              <p>Pesanan Mitra Batal</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>

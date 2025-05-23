@@ -604,6 +604,44 @@ public function logistik_tl_sum($user_id, $id = null) {
     return $query->result();
 }
 
+public function logistik_tl_sum_stk($user_id, $id = null) {
+  $user = $this->fungsi->user_login();
+
+  // Ambil nilai dari objek user
+  
+  $user_id   = isset($user->user_id) ? $user->user_id : null;
+  $this->db->select('
+        pesan.*, 
+        user.name AS user, 
+        stokis.nama_stokis AS stokis_nama, 
+        item.nama_item AS nama, 
+        status.status_nama AS statusnya, 
+        keranjang.harga_total AS harga_item, 
+        keranjang.jumlah AS jumlah, 
+        harg.nama_produk
+    ');
+    $this->db->from('pesan');
+    $this->db->join('user', 'user.user_id = pesan.pemesan', 'left');
+    $this->db->join('keranjang', 'keranjang.pesan_id = pesan.id_pesan', 'left');
+    $this->db->join('stokis', 'stokis.id_stokis = pesan.stokis', 'left');
+    $this->db->join('item', 'item.id_item = keranjang.barang_id', 'left'); // diasumsikan item diambil dari keranjang
+    $this->db->join('status', 'status.id_status = pesan.status', 'left');
+    $this->db->join('harg', 'harg.id_harga = keranjang.barang_id', 'left'); // diasumsikan id_harga = barang_id
+
+    $this->db->where('pesan.status', 6); 
+    $this->db->where('pesan.pemesan', $user_id);
+    
+
+    if ($id !== null) {
+        $this->db->where('pesan.id_pesan', $id);
+    }
+
+    $this->db->order_by('pesan.id_pesan', 'DESC');
+
+    $query = $this->db->get();
+    return $query->result();
+}
+
 public function logistik_tl_sum1($user_id, $id = null) {
     $this->db->select('
         pesan.*, 

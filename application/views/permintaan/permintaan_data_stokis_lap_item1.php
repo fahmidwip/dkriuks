@@ -36,7 +36,7 @@ function tgl_indo1($tanggal) {
 <!-- Main content -->
 <section class="content">
 
-<form method="GET" action="<?= site_url('pesan/export_excel_pisah3_direk_logis') ?>" class="form-inline" target="_blank">
+<form method="GET" action="<?= site_url('pesan/export_excel_pisah3_direk_stokis') ?>" class="form-inline" target="_blank">
     <div class="form-group">
         <label for="start_date">Dari Tanggal:</label>
         <input type="date" name="start_date" id="start_date" class="form-control" required onchange="formatTanggal(this)">

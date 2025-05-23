@@ -936,6 +936,216 @@ public function export_excel_pisah3_direk()
     exit;
 }
 
+public function export_excel_pisah3_direk_logis()
+{
+    $user_id = $this->fungsi->user_login()->stokis;
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $id = $this->input->get('id');
+
+    $this->db->select('
+        pesan.*, 
+        user.name AS nama_user, 
+        stokis.nama_stokis AS stokis_nama, 
+        item.nama_item AS nama_item, 
+        status.status_nama AS statusnya, 
+        keranjang.harga_total AS harga_item, 
+        keranjang.jumlah AS jumlah, 
+        harg.nama_produk AS nama_produk,
+        pesan.tanggal
+    ');
+    $this->db->from('pesan');
+    $this->db->join('user', 'user.user_id = pesan.pemesan', 'left');
+    $this->db->join('keranjang', 'keranjang.pesan_id = pesan.id_pesan', 'left');
+    $this->db->join('stokis', 'stokis.id_stokis = pesan.stokis', 'left');
+    $this->db->join('item', 'item.id_item = keranjang.barang_id', 'left'); 
+    $this->db->join('status', 'status.id_status = pesan.status', 'left');
+    $this->db->join('harg', 'harg.id_harga = keranjang.barang_id', 'left');
+    $this->db->where('pesan.status', 6);
+    $this->db->where('pesan.stokis', $user_id);
+
+    if (!empty($id)) {
+        $this->db->where('pesan.id_pesan', $id);
+    }
+
+    if (!empty($start_date) && !empty($end_date)) {
+        $this->db->where('pesan.tanggal >=', $start_date);
+        $this->db->where('pesan.tanggal <=', $end_date);
+    }
+
+    $this->db->order_by('pesan.id_pesan', 'DESC');
+    $query = $this->db->get();
+    $result = $query->result();
+
+    // Kelompokkan data
+    $grouped_data = [];
+    foreach ($result as $data) {
+        $key = $data->nama_produk . '|' . $data->tanggal . '|' . $data->nama_user;
+
+        if (!isset($grouped_data[$key])) {
+            $grouped_data[$key] = [
+                'nama_produk' => $data->nama_produk,
+                'user' => $data->nama_user,
+                'stokis_nama' => $data->stokis_nama,
+                'statusnya' => $data->statusnya,
+                'tanggal' => $data->tanggal,
+                'total_harga' => 0,
+                'details' => []
+            ];
+        }
+
+        $grouped_data[$key]['total_harga'] += $data->jumlah;
+        $grouped_data[$key]['details'][] = $data;
+    }
+
+    // Buat Spreadsheet
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Header
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Item');
+    $sheet->setCellValue('C1', 'Logistik');
+    $sheet->setCellValue('D1', 'Stokis');
+    $sheet->setCellValue('E1', 'Status');
+    $sheet->setCellValue('F1', 'Tanggal Pesan');
+    $sheet->setCellValue('G1', 'Total');
+
+    // Isi Data
+    $rowNumber = 2;
+    $no = 1;
+    foreach ($grouped_data as $group) {
+        $statusLabel = ucfirst($group['statusnya']);
+        $sheet->setCellValue('A' . $rowNumber, $no++);
+        $sheet->setCellValue('B' . $rowNumber, $group['nama_produk']);
+        $sheet->setCellValue('C' . $rowNumber, $group['stokis_nama']);
+        $sheet->setCellValue('D' . $rowNumber, $group['user']);
+        $sheet->setCellValue('E' . $rowNumber, $statusLabel);
+        $sheet->setCellValue('F' . $rowNumber, $group['tanggal']);
+        $sheet->setCellValue('G' . $rowNumber, $group['total_harga'] . ' Pcs');
+        $rowNumber++;
+    }
+
+    // Export file
+    $filename = 'laporan_pesan_' . date('Ymd_His') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit;
+}
+
+
+public function export_excel_pisah3_direk_stokis()
+{
+    $user = $this->fungsi->user_login();
+
+  // Ambil nilai dari objek user
+  
+  $user_id   = isset($user->user_id) ? $user->user_id : null;
+    
+    $user_id1 = $this->fungsi->user_login()->user_id;
+    $start_date = $this->input->get('start_date');
+    $end_date = $this->input->get('end_date');
+    $id = $this->input->get('id');
+
+    $this->db->select('
+        pesan.*, 
+        user.name AS nama_user, 
+        stokis.nama_stokis AS stokis_nama, 
+        item.nama_item AS nama_item, 
+        status.status_nama AS statusnya, 
+        keranjang.harga_total AS harga_item, 
+        keranjang.jumlah AS jumlah, 
+        harg.nama_produk AS nama_produk,
+        pesan.tanggal
+    ');
+    $this->db->from('pesan');
+    $this->db->join('user', 'user.user_id = pesan.pemesan', 'left');
+    $this->db->join('keranjang', 'keranjang.pesan_id = pesan.id_pesan', 'left');
+    $this->db->join('stokis', 'stokis.id_stokis = pesan.stokis', 'left');
+    $this->db->join('item', 'item.id_item = keranjang.barang_id', 'left'); 
+    $this->db->join('status', 'status.id_status = pesan.status', 'left');
+    $this->db->join('harg', 'harg.id_harga = keranjang.barang_id', 'left');
+    $this->db->where('pesan.pemesan', $user_id);
+    
+    
+
+    if (!empty($id)) {
+        $this->db->where('pesan.id_pesan', $id);
+    }
+
+    if (!empty($start_date) && !empty($end_date)) {
+        $this->db->where('pesan.tanggal >=', $start_date);
+        $this->db->where('pesan.tanggal <=', $end_date);
+    }
+
+    $this->db->order_by('pesan.id_pesan', 'DESC');
+    $query = $this->db->get();
+    $result = $query->result();
+
+    // Kelompokkan data
+    $grouped_data = [];
+    foreach ($result as $data) {
+        $key = $data->nama_produk . '|' . $data->tanggal . '|' . $data->nama_user;
+
+        if (!isset($grouped_data[$key])) {
+            $grouped_data[$key] = [
+                'nama_produk' => $data->nama_produk,
+                'user' => $data->nama_user,
+                'stokis_nama' => $data->stokis_nama,
+                'statusnya' => $data->statusnya,
+                'tanggal' => $data->tanggal,
+                'total_harga' => 0,
+                'details' => []
+            ];
+        }
+
+        $grouped_data[$key]['total_harga'] += $data->jumlah;
+        $grouped_data[$key]['details'][] = $data;
+    }
+
+    // Buat Spreadsheet
+    $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+
+    // Header
+    $sheet->setCellValue('A1', 'No');
+    $sheet->setCellValue('B1', 'Item');
+    $sheet->setCellValue('C1', 'Logistik');
+    $sheet->setCellValue('D1', 'Stokis');
+    $sheet->setCellValue('E1', 'Status');
+    $sheet->setCellValue('F1', 'Tanggal Pesan');
+    $sheet->setCellValue('G1', 'Total');
+
+    // Isi Data
+    $rowNumber = 2;
+    $no = 1;
+    foreach ($grouped_data as $group) {
+        $statusLabel = ucfirst($group['statusnya']);
+        $sheet->setCellValue('A' . $rowNumber, $no++);
+        $sheet->setCellValue('B' . $rowNumber, $group['nama_produk']);
+        $sheet->setCellValue('C' . $rowNumber, $group['stokis_nama']);
+        $sheet->setCellValue('D' . $rowNumber, $group['user']);
+        $sheet->setCellValue('E' . $rowNumber, $statusLabel);
+        $sheet->setCellValue('F' . $rowNumber, $group['tanggal']);
+        $sheet->setCellValue('G' . $rowNumber, $group['total_harga'] . ' Pcs');
+        $rowNumber++;
+    }
+
+    // Export file
+    $filename = 'laporan_pesan_' . date('Ymd_His') . '.xlsx';
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header('Content-Disposition: attachment; filename="' . $filename . '"');
+    header('Cache-Control: max-age=0');
+
+    $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+    $writer->save('php://output');
+    exit;
+}
+
 
 public function export_excel_pisah3_pen()
 {

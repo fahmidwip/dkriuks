@@ -50,7 +50,7 @@
             <td style="width:5%;"><?= $no++ ?></td>
             <td ><?= $data->nama_produk ?></td>
             <td style="width:25%;"><?= $data->provinsi_name ?></td>
-            <td style="width:15%;"> <?= $data->stok ?> Pcs</td>
+            <td style="width:15%;"> <?= $data->stok1 ?> Pcs</td>
             <td style="width:10%;">
               <input type="hidden" name="id_harga[]" value="<?= $data->barang_id ?>">
               <input type="hidden" name="id_stok[]" value="<?= $data->id_stok ?>">
